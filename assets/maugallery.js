@@ -89,7 +89,10 @@
             }
         },
         openLightBox(element, lightboxId) {
-            $(`#${lightboxId}`).find(".lightboxImage").attr("src", element.attr("src"));
+            $(`#${lightboxId}`)
+                .find(".lightboxImage")
+                .attr("src", element.attr("src"))
+                .attr("alt", element.attr("alt"));
             $(`#${lightboxId}`).modal("toggle");
         },
         prevImage() {
@@ -99,7 +102,7 @@
                     activeImage = $(this);
                 }
             });
-            let activeTag = $(".tags-bar span.active-tag").data("images-toggle");
+            let activeTag = $(".tags-bar .active-tag").data("images-toggle");
             let imagesCollection = [];
             if (activeTag === "all") {
                 $(".item-column").each(function () {
@@ -123,7 +126,7 @@
                 }
             });
             next = imagesCollection[index - 1] || imagesCollection[imagesCollection.length - 1];
-            $(".lightboxImage").attr("src", $(next).attr("src"));
+            $(".lightboxImage").attr("src", $(next).attr("src")).attr("alt", $(next).attr("alt"));
         },
         nextImage() {
             let activeImage = null;
@@ -132,7 +135,7 @@
                     activeImage = $(this);
                 }
             });
-            let activeTag = $(".tags-bar span.active-tag").data("images-toggle");
+            let activeTag = $(".tags-bar .active-tag").data("images-toggle");
             let imagesCollection = [];
             if (activeTag === "all") {
                 $(".item-column").each(function () {
@@ -156,7 +159,7 @@
                 }
             });
             next = imagesCollection[index + 1] || imagesCollection[0];
-            $(".lightboxImage").attr("src", $(next).attr("src"));
+            $(".lightboxImage").attr("src", $(next).attr("src")).attr("alt", $(next).attr("alt"));
         },
         createLightBox(gallery, lightboxId, navigation) {
             gallery.append(`<div class="modal fade" id="${
@@ -170,7 +173,7 @@
                                     ? '<div class="mg-prev" style="cursor:pointer;position:absolute;top:50%;left:-15px;background:white;"><</div>'
                                     : '<span style="display:none;" />'
                             }
-                            <img class="lightboxImage img-fluid" alt="Contenu de l'image affichée dans la modale au clique"/>
+                           <img class="lightboxImage img-fluid" alt=""/>
                             ${
                                 navigation
                                     ? '<div class="mg-next" style="cursor:pointer;position:absolute;top:50%;right:-15px;background:white;}">></div>'
@@ -183,10 +186,10 @@
         },
         showItemTags(gallery, position, tags) {
             var tagItems =
-                '<li class="nav-item"><span class="nav-link active active-tag"  data-images-toggle="all">Tous</span></li>';
+                '<li class="nav-item"><button type="button" class="nav-link active active-tag" data-images-toggle="all">Tous</button></li>';
             $.each(tags, function (index, value) {
                 tagItems += `<li class="nav-item active">
-                <span class="nav-link"  data-images-toggle="${value}">${value}</span></li>`;
+                <button type="button" class="nav-link"  data-images-toggle="${value}">${value}</button></li>`;
             });
             var tagsRow = `<ul class="my-4 tags-bar nav nav-pills">${tagItems}</ul>`;
 
